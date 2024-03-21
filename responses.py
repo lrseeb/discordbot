@@ -15,7 +15,7 @@ def got_response(user_input: str) -> str:
     lowered: str = user_input.lower()
 
     if 'y' in lowered:
-        return 'Valitse kategoria:\n1. Kirjallisuus\n2. Tiede\n3. Maantieto\n4. Vapaa-aika ja urheilu\n6. Historia'
+        return 'Valitse kategoria:\n1. Kirjallisuus\n2. Tiede\n3. Maantieto\n4. Vapaa-aika ja urheilu\n5. Historia\n6. viihde'
     elif '1' in lowered:
         return 'get question'
     elif '2' in lowered:
