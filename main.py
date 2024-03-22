@@ -29,7 +29,7 @@ async def send_message(message: Message, user_message: str) -> None:
         user_message = user_message[1:]
         
     try:
-        if user_message == '-trivia':
+        if user_message == '-t':
             listening_for_trivia = True
             response: str = get_response(user_message)
             await message.channel.send(response)
