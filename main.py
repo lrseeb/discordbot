@@ -2,8 +2,9 @@ from typing import Final
 import os
 from dotenv import load_dotenv
 from discord import Intents, Client, Message
+import asyncio
 
-from responses import get_response, got_response
+from responses import get_response, got_response, kysymys, vastaus
 
 # STEP 0: Loading our token from somewhere safe
 load_dotenv()
@@ -61,6 +62,19 @@ async def on_message(message: Message) -> None:
 
     print(f'[{channel}] {username}: "{user_message}"')
     await send_message(message, user_message)
+
+    def check(m):
+        return m.author == message.author and m.content.isdigit()
+    
+    try:
+        guess = await client.wait_for('message', check=check, timeout=900.0)
+    except asyncio.TimeoutError:
+        return await message.channel.send('Sorry, you took too long to answer :(')
+    
+    if int(guess.content) == vastaus:
+        await message.channel.send('you are right!')
+    else:
+        await message.channel.send('nah, correct answer would have been', + vastaus)
 
 # STEP 5: Main entry point
 def main() -> None:

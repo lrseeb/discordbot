@@ -1,6 +1,6 @@
 from random import choice, randint
 from urheilu import kysymykset
-from urheilu_v import vaihtoehot
+#from urheilu_v import vaihtoehot
 
 
 def get_response(user_input: str) -> str:
@@ -22,7 +22,11 @@ def got_response(user_input: str) -> str:
 
             urheiluK = list(kysymykset.keys())
             for i in urheiluK:
-                return i
+                kysymys = i
+            
+            vastaus = kysymykset.get(i)
+
+            return (kysymys, vastaus)
             
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
