@@ -4,11 +4,12 @@ from dotenv import load_dotenv
 from discord import Intents, Client, Message
 import asyncio
 
-from responses import get_response, got_response, kysymys, vastaus
+from responses import question_handler
 
 # STEP 0: Loading our token from somewhere safe
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
+loop: bool = True
 
 # STEP 1: Bot setup
 intents: Intents = Intents.default()
@@ -19,6 +20,7 @@ client: Client = Client(intents=intents)
 listening_for_trivia: bool = False
 
 # STEP 2: Message functionality
+"""
 async def send_message(message: Message, user_message: str) -> None:
     global listening_for_trivia
     
@@ -42,6 +44,7 @@ async def send_message(message: Message, user_message: str) -> None:
             await message.author.send(response) if is_private else await message.channel.send(response)
     except Exception as e:
         print(e)
+"""
 
 # STEP 3: Handling the startup for our bot
 @client.event
@@ -50,31 +53,55 @@ async def on_ready() -> None:
 
 # STEP 4: Handling incoming messages
 @client.event
-async def on_message(message: Message) -> None:
+async def on_message(message: Message):
     if message.author == client.user:
         return
     
-    global listening_for_trivia
-    
-    username: str = str(message.author)
-    user_message: str = message.content
-    channel: str = str(message.channel)
+    if message.content.startswith('-t'):
 
-    print(f'[{channel}] {username}: "{user_message}"')
-    await send_message(message, user_message)
+        await message.channel.send('Halutko pelata trivia peliä ? :DD (y/e)')
 
-    def check(m):
-        return m.author == message.author and m.content.isdigit()
+        global listening_for_trivia
+        
+        username: str = str(message.author)
+        user_message: str = message.content
+        channel: str = str(message.channel)
+
+        print(f'[{channel}] {username}: "{user_message}"')
+        #await send_message(message, user_message)
+
+    if message.content.startswith('y'):
+            await message.channel.send('Valitse kategoria:\n1. Kirjallisuus\n2. Tiede\n3. Maantieto\n4. Vapaa-aika ja urheilu\n5. Historia\n6. viihde')
+
+            try:
+                response = await client.wait_for('message', timeout=900.0, check=lambda m: m.author == message.author)
+                category_choice = response.content.strip()
+                
+                kysymys, vastaus = question_handler(category_choice)
+                await message.channel.send(kysymys)
+                print(kysymys)
+                print("tämä on vastaus =", vastaus)
+
+                def check(m):
+                    return m.author == message.author and m.content.isalpha()
+                    
+                try:
+                    guess = await client.wait_for('message', check=check, timeout=900.0)
+                except asyncio.TimeoutError:
+                    return await message.channel.send('Sorry, you took too long to answer :(')
+                    
+                if str(guess.content) == vastaus:
+                    await message.channel.send('you are right!\nHaluatko jatkaa peliä? (y/n)')
+                    
+                else:
+                    await message.channel.send('nah, correct answer would have been', vastaus, '\nHaluatko jatkaa peliä? (y/n)')
+                
+            except Exception as e:
+                print(e)
+        
     
-    try:
-        guess = await client.wait_for('message', check=check, timeout=900.0)
-    except asyncio.TimeoutError:
-        return await message.channel.send('Sorry, you took too long to answer :(')
-    
-    if int(guess.content) == vastaus:
-        await message.channel.send('you are right!')
-    else:
-        await message.channel.send('nah, correct answer would have been', + vastaus)
+
+            
 
 # STEP 5: Main entry point
 def main() -> None:
