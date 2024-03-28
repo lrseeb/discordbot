@@ -1,27 +1,28 @@
-from random import choice, randint
-from urheilu import kysymykset
-from tiede import kysymykset
+import random
+from urheilu import urheiluKysymykset
+from tiede import tiedeKysymykset
 
     
 def question_handler(category_choice: int) -> tuple:
 
     if category_choice == 1:
         try:
-            urheiluK = list(kysymykset.keys())
+            urheiluK = list(urheiluKysymykset.keys())
+            random.shuffle(urheiluK)
             for ui in urheiluK:
                 ukysymys = ui
-            uvastaus = kysymykset.get(ui)
+            uvastaus = urheiluKysymykset.get(ui)
             return (ukysymys, uvastaus)
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
-            return ('Error', 'Error')  # Placeholder values for error
+            return ('Error', 'Error')
     
     elif category_choice == 2:
         try:
-            tiedeK = list(kysymykset.keys())
+            tiedeK = list(tiedeKysymykset.keys())
             for i in tiedeK:
                 kysymys = i
-            vastaus = kysymykset.get(i)
+            vastaus = tiedeKysymykset.get(i)
             return (kysymys, vastaus)
         except Exception as e:
             print("Error reading or parsing JSON file:", e)

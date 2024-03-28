@@ -5,6 +5,7 @@ from discord import Intents, Client, Message
 import asyncio
 
 from responses import question_handler
+from results import result
 
 # STEP 0: Loading our token from somewhere safe
 load_dotenv()
@@ -19,32 +20,6 @@ client: Client = Client(intents=intents)
 # Global variable to track whether the bot should be listening for messages
 listening_for_trivia: bool = False
 
-# STEP 2: Message functionality
-"""
-async def send_message(message: Message, user_message: str) -> None:
-    global listening_for_trivia
-    
-    if not user_message:
-        print('(Message NULL)')
-        return
-    
-    if is_private := user_message.startswith('?'):
-        user_message = user_message[1:]
-        
-    try:
-        if user_message == '-t':
-            listening_for_trivia = True
-            response: str = get_response(user_message)
-            await message.channel.send(response)
-        elif listening_for_trivia:
-            response: str = got_response(user_message)
-            await message.channel.send(response)
-        else:
-            response: str = get_response(user_message)
-            await message.author.send(response) if is_private else await message.channel.send(response)
-    except Exception as e:
-        print(e)
-"""
 
 # STEP 3: Handling the startup for our bot
 @client.event
@@ -68,14 +43,14 @@ async def on_message(message: Message):
         channel: str = str(message.channel)
 
         print(f'[{channel}] {username}: "{user_message}"')
-        #await send_message(message, user_message)
 
     if message.content.startswith('y'):
+            
             await message.channel.send('Valitse kategoria:\n1. Kirjallisuus\n2. Tiede\n3. Maantieto\n4. Vapaa-aika ja urheilu\n5. Historia\n6. viihde')
 
             try:
                 response = await client.wait_for('message', timeout=900.0, check=lambda m: m.author == message.author)
-                category_choice = response.content.strip()
+                category_choice = int(response.content.strip())
                 
                 kysymys, vastaus = question_handler(category_choice)
                 await message.channel.send(kysymys)
@@ -88,19 +63,33 @@ async def on_message(message: Message):
                 try:
                     guess = await client.wait_for('message', check=check, timeout=900.0)
                 except asyncio.TimeoutError:
-                    return await message.channel.send('Sorry, you took too long to answer :(')
+                    await message.channel.send('Sorry, you took too long to answer :(')
+                    await client.http.connector.close()
+                    await client.close()
                     
                 if str(guess.content) == vastaus:
-                    await message.channel.send('you are right!\nHaluatko jatkaa peliä? (y/n)')
-                    
-                else:
-                    await message.channel.send('nah, correct answer would have been', vastaus, '\nHaluatko jatkaa peliä? (y/n)')
-                
-            except Exception as e:
-                print(e)
-        
-    
+                    oikein = result.get(category_choice)
+                    result[category_choice] = oikein + 1 
+                    print(result)
 
+                    if all(score >= 1 for score in result.values()):
+                        await message.channel.send('Yay, voitit !\nHaluatko silti jatkaa ? :0 (y/n)')
+                    else:
+                        await message.channel.send('you are right!\nHaluatko jatkaa peliä? (y/n)')
+
+                elif str(guess.content) != vastaus:
+                    await message.channel.send(f'nah, correct answer would have been {vastaus}\nHaluatko jatkaa peliä? (y/n)')
+                
+            except asyncio.TimeoutError:
+                await message.channel.send('Sorry, you took too long to answer :(')
+                await client.http.connector.close()
+                await client.close()
+
+    elif message.content.startswith('n'):
+        await message.channel.send('Heipähei!')
+        print('lopetus')
+        await client.http.connector.close()
+        await client.close()
             
 
 # STEP 5: Main entry point
