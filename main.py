@@ -46,7 +46,7 @@ async def on_message(message: Message):
 
     if message.content.startswith('y'):
             
-            await message.channel.send('Valitse kategoria:\n1. Kirjallisuus\n2. Tiede\n3. Maantieto\n4. Vapaa-aika ja urheilu\n5. Historia\n6. viihde')
+            await message.channel.send('Valitse kategoria:\n1. Maantieto\n2. Viihde\n3. Historia\n4. Kirjallisuus ja taide\n5. Tiede ja luonto\n6. Urheilu ja vapaa-aika')
 
             try:
                 response = await client.wait_for('message', timeout=900.0, check=lambda m: m.author == message.author)

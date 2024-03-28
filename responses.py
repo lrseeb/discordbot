@@ -1,25 +1,69 @@
 import random
-from urheilu import urheiluKysymykset
+from maantieto import maaKysymykset
+from viihde import viihdeKysymykset
+from historia import historiaKysymykset
+from kirjallisuus import kirjaKysymykset
 from tiede import tiedeKysymykset
-
+from urheilu import urheiluKysymykset
     
 def question_handler(category_choice: int) -> tuple:
 
     if category_choice == 1:
         try:
-            urheiluK = list(urheiluKysymykset.keys())
-            random.shuffle(urheiluK)
-            for ui in urheiluK:
-                ukysymys = ui
-            uvastaus = urheiluKysymykset.get(ui)
-            return (ukysymys, uvastaus)
+            maaK = list(maaKysymykset.keys())
+            random.shuffle(maaK)
+            for i in maaK:
+                kysymys = i
+            vastaus = maaKysymykset.get(i)
+            maaKysymykset.pop(i)
+            if not maaKysymykset:
+                return ('Ei enää kysymyksiä tästä kategoriasta, valitse uusi', 'Ei enää kysymyksiä tästä kategoriasta, valitse uusi')
+            else:
+                return (kysymys, vastaus)
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
-            return ('Error', 'Error')
+            return ('Error', 'Error') 
     
     elif category_choice == 2:
         try:
+            viihdeK = list(viihdeKysymykset.keys())
+            random.shuffle(viihdeK)
+            for i in viihdeK:
+                kysymys = i
+            vastaus = viihdeKysymykset.get(i)
+            return (kysymys, vastaus)
+        except Exception as e:
+            print("Error reading or parsing JSON file:", e)
+            return ('Error', 'Error') 
+
+    elif category_choice == 3:
+        try:
+            historiaK = list(historiaKysymykset.keys())
+            random.shuffle(historiaK)
+            for i in historiaK:
+                kysymys = i
+            vastaus = historiaKysymykset.get(i)
+            return (kysymys, vastaus)
+        except Exception as e:
+            print("Error reading or parsing JSON file:", e)
+            return ('Error', 'Error') 
+    
+    elif category_choice == 4:
+        try:
+            kirjaK = list(kirjaKysymykset.keys())
+            random.shuffle(kirjaK)
+            for i in kirjaK:
+                kysymys = i
+            vastaus = kirjaKysymykset.get(i)
+            return (kysymys, vastaus)
+        except Exception as e:
+            print("Error reading or parsing JSON file:", e)
+            return ('Error', 'Error') 
+    
+    elif category_choice == 5:
+        try:
             tiedeK = list(tiedeKysymykset.keys())
+            random.shuffle(tiedeK)
             for i in tiedeK:
                 kysymys = i
             vastaus = tiedeKysymykset.get(i)
@@ -27,13 +71,18 @@ def question_handler(category_choice: int) -> tuple:
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
             return ('Error', 'Error') 
-    elif '3':
-        return 'get question'
-    elif '4':
-        return 'get question'
-    elif '5':
-        return 'get question'
-    elif '6':
-        return 'get question'
+        
+    elif category_choice == 6:
+        try:
+            urheiluK = list(urheiluKysymykset.keys())
+            random.shuffle(urheiluK)
+            for i in urheiluK:
+                kysymys = i
+            vastaus = urheiluKysymykset.get(i)
+            return (kysymys, vastaus)
+        except Exception as e:
+            print("Error reading or parsing JSON file:", e)
+            return ('Error', 'Error')
+        
     else:
         return ('get question', 'get answer')
