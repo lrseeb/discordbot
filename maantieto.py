@@ -6,5 +6,7 @@ maaKysymykset = {
     "Mikä on nimeltään Lähi-idän preinteinen tahna, joka koostuu enimmäkseen murskatuista seesaminsiemenistä?:\na. Tahini\nb. Muhammara\nc. Shawarma\nd. Hummus" : "a",
     "Lihamuki on nimensä mukaisesti kebab-lihalla täytetty kertakäyttömuki.\nMistä suomalaisesta kaupungista tämä ruokalaji on lähtöisin?:\na. Porista\nb. Lahdesta\nc. Lappeenrannasta\nd. Porvoosta" : "b",
     "Mihin maahan Zara avasi ensimmäisen vaatekauppansa?:\na. Ranskaan\nb. Englantiin\nc. Ruotsiin\nd. Espanjaan" : "d",
-    "Missä maassa sijaitsee formulakisoista tuttu Hungaroring?:\na. Unkarissa\nb. Ukrainassa\nc. Puolassa\nd. Kroatiassa" : "a"
+    "Missä maassa sijaitsee formulakisoista tuttu Hungaroring?:\na. Unkarissa\nb. Ukrainassa\nc. Puolassa\nd. Kroatiassa" : "a",
+    "Saariston Rengastie kiertää Ahvenanmaan ympäri -\na. totta\nb. tarua" : "b",
+    "Millä paikkakunnalla asuvat Suomen ainoat Jääkarhut?:\na. Helsingissä\nb. Ähtärissä\nc. Ranualla\nd. Lomamäellä" : "c"
     }

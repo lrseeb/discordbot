@@ -10,7 +10,7 @@ from results import result
 # STEP 0: Loading our token from somewhere safe
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
-loop: bool = True
+#loop: bool = True
 
 # STEP 1: Bot setup
 intents: Intents = Intents.default()
@@ -46,7 +46,7 @@ async def on_message(message: Message):
 
     if message.content.startswith('y'):
             
-            await message.channel.send('Valitse kategoria:\n1. Maantieto\n2. Viihde\n3. Historia\n4. Kirjallisuus ja taide\n5. Tiede ja luonto\n6. Urheilu ja vapaa-aika')
+            await message.channel.send('Valitse kategoria (Kirjoita vain numero (1-6)):\n1. Maantieto\n2. Viihde\n3. Historia\n4. Kirjallisuus ja taide\n5. Tiede ja luonto\n6. Urheilu ja vapaa-aika')
 
             try:
                 response = await client.wait_for('message', timeout=900.0, check=lambda m: m.author == message.author)
@@ -63,7 +63,7 @@ async def on_message(message: Message):
                 try:
                     guess = await client.wait_for('message', check=check, timeout=900.0)
                 except asyncio.TimeoutError:
-                    await message.channel.send('Sorry, you took too long to answer :(')
+                    await message.channel.send('Sorry, aika kului loppuun :(')
                     await client.http.connector.close()
                     await client.close()
                     
@@ -75,13 +75,13 @@ async def on_message(message: Message):
                     if all(score >= 1 for score in result.values()):
                         await message.channel.send('Yay, voitit !\nHaluatko silti jatkaa ? :0 (y/n)')
                     else:
-                        await message.channel.send('you are right!\nHaluatko jatkaa peliä? (y/n)')
+                        await message.channel.send('Oikein!\nHaluatko jatkaa peliä? (y/n)')
 
                 elif str(guess.content) != vastaus:
-                    await message.channel.send(f'nah, correct answer would have been {vastaus}\nHaluatko jatkaa peliä? (y/n)')
+                    await message.channel.send(f'nah, oikea vastaus olisi ollut {vastaus}\nHaluatko jatkaa peliä? (y/n)')
                 
             except asyncio.TimeoutError:
-                await message.channel.send('Sorry, you took too long to answer :(')
+                await message.channel.send('Sorry, aika kului loppuun :(')
                 await client.http.connector.close()
                 await client.close()
 

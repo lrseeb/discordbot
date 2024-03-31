@@ -31,7 +31,11 @@ def question_handler(category_choice: int) -> tuple:
             for i in viihdeK:
                 kysymys = i
             vastaus = viihdeKysymykset.get(i)
-            return (kysymys, vastaus)
+            viihdeKysymykset.pop(i)
+            if not viihdeKysymykset:
+                return ('Ei enää kysymyksiä tästä kategoriasta, valitse uusi', 'Ei enää kysymyksiä tästä kategoriasta, valitse uusi')
+            else:
+                return (kysymys, vastaus)
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
             return ('Error', 'Error') 
@@ -43,7 +47,11 @@ def question_handler(category_choice: int) -> tuple:
             for i in historiaK:
                 kysymys = i
             vastaus = historiaKysymykset.get(i)
-            return (kysymys, vastaus)
+            historiaKysymykset.pop(i)
+            if not historiaKysymykset:
+                return ('Ei enää kysymyksiä tästä kategoriasta, valitse uusi', 'Ei enää kysymyksiä tästä kategoriasta, valitse uusi')
+            else:
+                return (kysymys, vastaus)
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
             return ('Error', 'Error') 
@@ -55,7 +63,11 @@ def question_handler(category_choice: int) -> tuple:
             for i in kirjaK:
                 kysymys = i
             vastaus = kirjaKysymykset.get(i)
-            return (kysymys, vastaus)
+            kirjaKysymykset.pop(i)
+            if not kirjaKysymykset:
+                return ('Ei enää kysymyksiä tästä kategoriasta, valitse uusi', 'Ei enää kysymyksiä tästä kategoriasta, valitse uusi')
+            else:
+                return (kysymys, vastaus)
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
             return ('Error', 'Error') 
@@ -67,7 +79,11 @@ def question_handler(category_choice: int) -> tuple:
             for i in tiedeK:
                 kysymys = i
             vastaus = tiedeKysymykset.get(i)
-            return (kysymys, vastaus)
+            tiedeKysymykset.pop(i)
+            if not tiedeKysymykset:
+                return ('Ei enää kysymyksiä tästä kategoriasta, valitse uusi', 'Ei enää kysymyksiä tästä kategoriasta, valitse uusi')
+            else:
+                return (kysymys, vastaus)
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
             return ('Error', 'Error') 
@@ -79,7 +95,11 @@ def question_handler(category_choice: int) -> tuple:
             for i in urheiluK:
                 kysymys = i
             vastaus = urheiluKysymykset.get(i)
-            return (kysymys, vastaus)
+            urheiluKysymykset.pop(i)
+            if not urheiluKysymykset:
+                return ('Ei enää kysymyksiä tästä kategoriasta, valitse uusi', 'Ei enää kysymyksiä tästä kategoriasta, valitse uusi')
+            else:
+                return (kysymys, vastaus)
         except Exception as e:
             print("Error reading or parsing JSON file:", e)
             return ('Error', 'Error')
