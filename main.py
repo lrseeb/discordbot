@@ -53,7 +53,7 @@ async def on_message(message: Message):
                 category_choice = int(response.content.strip())
                 
                 kysymys, vastaus = question_handler(category_choice)
-                await message.channel.send(kysymys)
+                await message.channel.send(f'{kysymys}\nVastaa vain kirjaimin (a-d)')
                 print(kysymys)
                 print("tämä on vastaus =", vastaus)
 
