@@ -7,12 +7,11 @@ import asyncio
 from responses import question_handler
 from results import result
 
-# STEP 0: Loading our token from somewhere safe
+# Loading our token from somewhere safe
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
-#loop: bool = True
 
-# STEP 1: Bot setup
+# Bot setup
 intents: Intents = Intents.default()
 intents.message_content = True  # NOQA
 client: Client = Client(intents=intents)
@@ -21,12 +20,12 @@ client: Client = Client(intents=intents)
 listening_for_trivia: bool = False
 
 
-# STEP 3: Handling the startup for our bot
+# Handling the startup for our bot
 @client.event
 async def on_ready() -> None:
     print(f'{client.user} is now running!')
 
-# STEP 4: Handling incoming messages
+# Handling incoming messages
 @client.event
 async def on_message(message: Message):
     if message.author == client.user:
