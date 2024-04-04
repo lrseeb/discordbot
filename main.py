@@ -72,7 +72,7 @@ async def on_message(message: Message):
                     print(result)
 
                     if all(score >= 1 for score in result.values()):
-                        await message.channel.send('Yay, voitit !\nHaluatko silti jatkaa ? :0 (y/n)')
+                        await message.channel.send('Yay, voitit "pelin", eli olet vastannut oikein ainakin yhteen kysymykseen jokaisesta kategoriasta!\nHaluatko silti jatkaa ? :0 (y/n)')
                     else:
                         await message.channel.send('Oikein!\nHaluatko jatkaa peliä? (y/n)')
 
