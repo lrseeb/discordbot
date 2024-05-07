@@ -33,7 +33,7 @@ async def on_message(message: Message):
     
     if message.content.startswith('-t'):
 
-        await message.channel.send('Halutko pelata trivia peliä ? :DD (y/e)')
+        await message.channel.send('Halutko pelata trivia peliä ? :DD (y/n)')
 
         global listening_for_trivia
         
@@ -48,7 +48,7 @@ async def on_message(message: Message):
             await message.channel.send('Valitse kategoria (Kirjoita vain numero (1-6)):\n1. Maantieto\n2. Viihde\n3. Historia\n4. Kirjallisuus ja taide\n5. Tiede ja luonto\n6. Urheilu ja vapaa-aika')
 
             try:
-                response = await client.wait_for('message', timeout=900.0, check=lambda m: m.author == message.author)
+                response = await client.wait_for('message', timeout=900.0, check=lambda m: m.author == message.author and 1 <= int(m.content) <= 6)
                 category_choice = int(response.content.strip())
                 
                 kysymys, vastaus = question_handler(category_choice)
@@ -72,13 +72,16 @@ async def on_message(message: Message):
                     print(result)
 
                     if all(score >= 1 for score in result.values()):
-                        await message.channel.send('Yay, voitit "pelin", eli olet vastannut oikein ainakin yhteen kysymykseen jokaisesta kategoriasta!\nHaluatko silti jatkaa ? :0 (y/n)')
+                        await message.channel.send('Yay, voitit "pelin" ༼◥▶ل͜◀◤༽ , eli olet vastannut oikein ainakin yhteen kysymykseen jokaisesta kategoriasta!\nHaluatko silti jatkaa ? (>ω^) (y/n)')
                     else:
                         await message.channel.send('Oikein!\nHaluatko jatkaa peliä? (y/n)')
 
                 elif str(guess.content) != vastaus:
-                    await message.channel.send(f'nah, oikea vastaus olisi ollut {vastaus}\nHaluatko jatkaa peliä? (y/n)')
-                
+                    await message.channel.send(f'nah, oikea vastaus olisi ollut ({vastaus})  ┐(︶▽︶)┌\nHaluatko jatkaa peliä? (y/n)')
+
+            except ValueError:
+                await message.channel.send('Et tainnut kirjoittaa numeroa (͠≖ ͜ʖ͠≖) ?\nKirjoita "y" vielä uudelleen ja kirjoita tällä kertaa numero väliltä 1-6')
+
             except asyncio.TimeoutError:
                 await message.channel.send('Sorry, aika kului loppuun :(')
                 await client.http.connector.close()
@@ -86,9 +89,6 @@ async def on_message(message: Message):
 
     elif message.content.startswith('n'):
         await message.channel.send('Heipähei!')
-        print('lopetus')
-        await client.http.connector.close()
-        await client.close()
             
 
 # STEP 5: Main entry point
